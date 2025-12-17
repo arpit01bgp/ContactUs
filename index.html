@@ -20,7 +20,12 @@
 
         body {
             background: #0f0c29;
-            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            /* 4K Background Image */
+            background-image: linear-gradient(rgba(15, 12, 41, 0.6), rgba(15, 12, 41, 0.8)), 
+                              url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=3844&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -29,15 +34,22 @@
             position: relative;
         }
 
-        /* --- BACKGROUND PARTICLES CANVAS --- */
-        #particles {
+        /* --- AMBIENT GLOW (Zero Lag Alternative to Particles) --- */
+        body::before {
+            content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            width: 300px;
+            height: 300px;
+            background: rgba(0, 210, 255, 0.2);
+            filter: blur(100px);
+            border-radius: 50%;
             z-index: 1;
-            pointer-events: none;
+            animation: moveGlow 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes moveGlow {
+            0% { top: 10%; left: 10%; }
+            100% { top: 70%; left: 80%; }
         }
 
         /* --- GLASS CONTAINER --- */
@@ -46,21 +58,21 @@
             z-index: 2;
             width: calc(100% - 40px);
             max-width: 450px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             will-change: transform;
         }
 
         .container:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 210, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 30px 60px rgba(0, 210, 255, 0.15);
         }
 
         h2 {
@@ -69,10 +81,10 @@
             margin-bottom: 30px;
             font-weight: 600;
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+            text-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
         }
 
-        /* --- INPUT GROUPS & ANIMATION --- */
+        /* --- FORM ELEMENTS --- */
         form {
             display: flex;
             flex-direction: column;
@@ -86,8 +98,8 @@
         .input-box input, 
         .input-box textarea {
             width: 100%;
-            padding: 15px 15px 15px 45px;
-            background: rgba(0, 0, 0, 0.2);
+            padding: 15px 15px 15px 48px;
+            background: rgba(0, 0, 0, 0.35);
             border: 1px solid rgba(255, 255, 255, 0.1);
             outline: none;
             border-radius: 12px;
@@ -98,15 +110,14 @@
 
         .input-box textarea {
             resize: none;
-            height: 120px;
+            height: 110px;
         }
 
-        /* The Neon Glow Effect Optimized */
         .input-box input:focus, 
         .input-box textarea:focus {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             border-color: #00d2ff;
-            box-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.15);
         }
 
         .input-box i {
@@ -115,7 +126,6 @@
             top: 18px;
             color: rgba(255, 255, 255, 0.4);
             transition: 0.3s;
-            pointer-events: none;
         }
 
         .input-box input:focus ~ i,
@@ -124,7 +134,7 @@
             text-shadow: 0 0 8px #00d2ff;
         }
 
-        /* --- BUTTON STYLING --- */
+        /* --- BUTTON --- */
         button {
             width: 100%;
             padding: 16px;
@@ -138,26 +148,24 @@
             transition: 0.3s;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
-            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         button:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
+            filter: brightness(1.1);
+            box-shadow: 0 12px 25px rgba(0, 210, 255, 0.3);
         }
 
-        button:active {
-            transform: scale(0.98);
-        }
+        button:active { transform: scale(0.98); }
 
         .spinner {
             display: none;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border: 2px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: #fff;
@@ -165,42 +173,28 @@
             margin-left: 10px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- SUCCESS MESSAGE --- */
         #msg {
             text-align: center;
             margin-top: 5px;
             font-size: 14px;
-            font-weight: 500;
             min-height: 24px;
-            transition: opacity 0.3s ease, transform 0.3s ease;
             opacity: 0;
-            transform: translateY(5px);
+            transition: 0.3s;
         }
 
-        #msg.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
+        #msg.show { opacity: 1; }
         #msg.success { color: #00ff88; }
         #msg.error { color: #ff4b4b; }
 
-        ::placeholder { color: rgba(255, 255, 255, 0.3); }
-
-        /* Responsive Fixes */
         @media (max-width: 480px) {
             .container { padding: 30px 20px; }
-            h2 { font-size: 1.5rem; }
+            h2 { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
-
-    <canvas id="particles"></canvas>
 
     <div class="container">
         <h2><i class="fa-solid fa-paper-plane"></i> Get In Touch</h2>
@@ -231,7 +225,6 @@
     </div>
 
     <script>
-        // --- 1. THE SUBMISSION LOGIC ---
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwD5u5jRIzmBYSUyKPpYVOZzRYfBnbY8yQ7TkXS-OludxplmN9AQtNcBxFYMK1cu3gC/exec';
         const form = document.getElementById('contactForm');
         const msg = document.getElementById("msg");
@@ -241,22 +234,20 @@
 
         form.addEventListener('submit', e => {
             e.preventDefault();
-            
             btnText.innerHTML = "Sending";
             spinner.style.display = "block";
             btn.disabled = true;
-            btn.style.filter = "grayscale(0.5)";
 
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
                 .then(response => {
-                    msg.innerHTML = "<i class='fa-solid fa-check-circle'></i> Message Sent!";
+                    msg.innerHTML = "Message Sent!";
                     msg.className = "show success";
                     form.reset();
                     resetButton();
                     setTimeout(() => { msg.className = ""; }, 4000);
                 })
                 .catch(error => {
-                    msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Error. Try again.";
+                    msg.innerHTML = "Error. Please try again.";
                     msg.className = "show error";
                     resetButton();
                 });
@@ -266,90 +257,7 @@
             btnText.innerHTML = "Send Message";
             spinner.style.display = "none";
             btn.disabled = false;
-            btn.style.filter = "none";
         }
-
-        // --- 2. OPTIMIZED BACKGROUND ANIMATION ---
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d', { alpha: false }); // Performance optimization
-        
-        let width, height, particlesArray;
-        const particleCount = window.innerWidth < 768 ? 40 : 70; // Reduce count on mobile
-        const connectionDistance = 140;
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            init();
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = (Math.random() - 0.5) * 0.8;
-                this.speedY = (Math.random() - 0.5) * 0.8;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.x > width) this.x = 0;
-                else if (this.x < 0) this.x = width;
-                if (this.y > height) this.y = 0;
-                else if (this.y < 0) this.y = height;
-            }
-            draw() {
-                ctx.fillStyle = '#00d2ff';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            particlesArray = [];
-            for (let i = 0; i < particleCount; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
-
-        function animate() {
-            // Draw background to clear instead of clearRect for better performance with alpha:false
-            ctx.fillStyle = '#16162d'; 
-            ctx.fillRect(0, 0, width, height);
-            
-            ctx.lineWidth = 0.8;
-            
-            for (let i = 0; i < particlesArray.length; i++) {
-                const p1 = particlesArray[i];
-                p1.update();
-                p1.draw();
-
-                // Optimization: Only check forward in array
-                for (let j = i + 1; j < particlesArray.length; j++) {
-                    const p2 = particlesArray[j];
-                    const dx = p1.x - p2.x;
-                    const dy = p1.y - p2.y;
-                    const distSq = dx * dx + dy * dy; // Use squared distance to avoid Math.sqrt
-
-                    if (distSq < connectionDistance * connectionDistance) {
-                        const opacity = 1 - (Math.sqrt(distSq) / connectionDistance);
-                        ctx.strokeStyle = `rgba(0, 210, 255, ${opacity * 0.2})`;
-                        ctx.beginPath();
-                        ctx.moveTo(p1.x, p1.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-        animate();
     </script>
 </body>
 </html>
