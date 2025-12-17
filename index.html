@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Future UI</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- RESET & CORE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #0f0c29; /* Fallback */
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Prevent scrollbars from particles */
+            position: relative;
+        }
+
+        /* --- BACKGROUND PARTICLES CANVAS --- */
+        #particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* --- GLASS CONTAINER --- */
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 210, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.7);
+        }
+
+        /* --- INPUT GROUPS & ANIMATION --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-box {
+            position: relative;
+        }
+
+        .input-box input, 
+        .input-box textarea {
+            width: 100%;
+            padding: 15px 15px 15px 45px; /* Space for icon */
+            background: rgba(0, 0, 0, 0.2);
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .input-box textarea {
+            resize: none;
+            height: 120px;
+        }
+
+        /* The Neon Glow Effect */
+        .input-box input:focus, 
+        .input-box textarea:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: #00d2ff;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5), inset 0 0 10px rgba(0, 210, 255, 0.1);
+        }
+
+        .input-box i {
+            position: absolute;
+            left: 15px;
+            top: 18px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: 0.3s;
+        }
+
+        .input-box input:focus ~ i,
+        .input-box textarea:focus ~ i {
+            color: #00d2ff;
+            text-shadow: 0 0 8px #00d2ff;
+        }
+
+        /* --- BUTTON STYLING --- */
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Loading Spinner inside button */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- SUCCESS MESSAGE --- */
+        #msg {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 500;
+            min-height: 20px;
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        #msg.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #msg.success { color: #00ff88; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
+        #msg.error { color: #ff4b4b; text-shadow: 0 0 10px rgba(255, 75, 75, 0.5); }
+
+        /* --- PLACEHOLDER COLOR --- */
+        ::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+    </style>
+</head>
+<body>
+
+    <!-- Background Animation Canvas -->
+    <canvas id="particles"></canvas>
+
+    <div class="container">
+        <h2><i class="fa-solid fa-paper-plane"></i> Get In Touch</h2>
+        
+        <form name="submit-to-google-sheet">
+            
+            <div class="input-box">
+                <input name="Name" type="text" placeholder="Your Name" required autocomplete="off">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="input-box">
+                <input name="Email" type="email" placeholder="Email Address" required autocomplete="off">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+
+            <div class="input-box">
+                <textarea name="Message" placeholder="Type your message here..." required></textarea>
+                <i class="fa-solid fa-comment-dots" style="top: 15px;"></i>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                <span id="btnText">Send Message</span>
+                <div class="spinner" id="btnSpinner"></div>
+            </button>
+
+            <p id="msg"></p>
+        </form>
+    </div>
+
+    <script>
+        // --- 1. THE SUBMISSION LOGIC ---
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwD5u5jRIzmBYSUyKPpYVOZzRYfBnbY8yQ7TkXS-OludxplmN9AQtNcBxFYMK1cu3gC/exec';
+        const form = document.forms['submit-to-google-sheet'];
+        const msg = document.getElementById("msg");
+        const btn = document.getElementById("submitBtn");
+        const btnText = document.getElementById("btnText");
+        const spinner = document.getElementById("btnSpinner");
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // UI Loading State
+            btnText.innerHTML = "Sending...";
+            spinner.style.display = "block";
+            btn.style.opacity = "0.7";
+            btn.disabled = true;
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    // Success UI
+                    msg.innerHTML = "<i class='fa-solid fa-check-circle'></i> Message Sent Successfully!";
+                    msg.className = "show success";
+                    form.reset();
+                    resetButton();
+                    setTimeout(() => { msg.className = ""; }, 5000);
+                })
+                .catch(error => {
+                    // Error UI
+                    console.error('Error!', error.message);
+                    msg.innerHTML = "<i class='fa-solid fa-exclamation-circle'></i> Failed to send. Please try again.";
+                    msg.className = "show error";
+                    resetButton();
+                });
+        });
+
+        function resetButton() {
+            btnText.innerHTML = "Send Message";
+            spinner.style.display = "none";
+            btn.style.opacity = "1";
+            btn.disabled = false;
+        }
+
+
+        // --- 2. BACKGROUND PARTICLE ANIMATION ---
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        // Create Particle Class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1; // Size between 1 and 4
+                this.speedX = Math.random() * 1 - 0.5; // Random horizontal speed
+                this.speedY = Math.random() * 1 - 0.5; // Random vertical speed
+                this.color = `rgba(0, 210, 255, ${Math.random() * 0.5 + 0.1})`; // Neon Blue opacity
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Bounce off edges
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10; // Glow effect
+                ctx.shadowColor = "#00d2ff";
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Init Particles
+        function init() {
+            particlesArray = [];
+            for (let i = 0; i < 80; i++) { // Number of particles
+                particlesArray.push(new Particle());
+            }
+        }
+
+        // Connect particles with lines
+        function handleParticles() {
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                
+                for (let j = i; j < particlesArray.length; j++) {
+                    const dx = particlesArray[i].x - particlesArray[j].x;
+                    const dy = particlesArray[i].y - particlesArray[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) { // Connection distance
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 210, 255, ${0.1 - distance/2000})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        ctx.stroke();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animate);
+        }
+
+        // Resize event
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+
+        init();
+        animate();
+
+    </script>
+
+</body>
+</html>
