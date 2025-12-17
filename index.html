@@ -19,13 +19,13 @@
         }
 
         body {
-            background: #0f0c29; /* Fallback */
+            background: #0f0c29;
             background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Prevent scrollbars from particles */
+            overflow: hidden;
             position: relative;
         }
 
@@ -37,13 +37,14 @@
             width: 100%;
             height: 100%;
             z-index: 1;
+            pointer-events: none;
         }
 
         /* --- GLASS CONTAINER --- */
         .container {
             position: relative;
             z-index: 2;
-            width: 100%;
+            width: calc(100% - 40px);
             max-width: 450px;
             background: rgba(255, 255, 255, 0.05);
             padding: 40px;
@@ -52,7 +53,8 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+            will-change: transform;
         }
 
         .container:hover {
@@ -67,7 +69,7 @@
             margin-bottom: 30px;
             font-weight: 600;
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.7);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
         }
 
         /* --- INPUT GROUPS & ANIMATION --- */
@@ -84,15 +86,14 @@
         .input-box input, 
         .input-box textarea {
             width: 100%;
-            padding: 15px 15px 15px 45px; /* Space for icon */
+            padding: 15px 15px 15px 45px;
             background: rgba(0, 0, 0, 0.2);
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             outline: none;
-            border-radius: 10px;
+            border-radius: 12px;
             color: #fff;
             font-size: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
         .input-box textarea {
@@ -100,20 +101,21 @@
             height: 120px;
         }
 
-        /* The Neon Glow Effect */
+        /* The Neon Glow Effect Optimized */
         .input-box input:focus, 
         .input-box textarea:focus {
             background: rgba(0, 0, 0, 0.4);
             border-color: #00d2ff;
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5), inset 0 0 10px rgba(0, 210, 255, 0.1);
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
         }
 
         .input-box i {
             position: absolute;
-            left: 15px;
+            left: 18px;
             top: 18px;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.4);
             transition: 0.3s;
+            pointer-events: none;
         }
 
         .input-box input:focus ~ i,
@@ -125,44 +127,42 @@
         /* --- BUTTON STYLING --- */
         button {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background: linear-gradient(45deg, #00d2ff, #3a7bd5);
             color: #fff;
             border: none;
             border-radius: 30px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
             position: relative;
-            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         button:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);
-            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
         }
 
         button:active {
             transform: scale(0.98);
         }
 
-        /* Loading Spinner inside button */
         .spinner {
             display: none;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
+            border: 2px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-            position: absolute;
-            right: 20px;
-            top: 15px;
+            animation: spin 0.8s linear infinite;
+            margin-left: 10px;
         }
 
         @keyframes spin {
@@ -172,13 +172,13 @@
         /* --- SUCCESS MESSAGE --- */
         #msg {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 5px;
             font-size: 14px;
             font-weight: 500;
-            min-height: 20px;
-            transition: all 0.5s ease;
+            min-height: 24px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(5px);
         }
 
         #msg.show {
@@ -186,24 +186,26 @@
             transform: translateY(0);
         }
         
-        #msg.success { color: #00ff88; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
-        #msg.error { color: #ff4b4b; text-shadow: 0 0 10px rgba(255, 75, 75, 0.5); }
+        #msg.success { color: #00ff88; }
+        #msg.error { color: #ff4b4b; }
 
-        /* --- PLACEHOLDER COLOR --- */
         ::placeholder { color: rgba(255, 255, 255, 0.3); }
 
+        /* Responsive Fixes */
+        @media (max-width: 480px) {
+            .container { padding: 30px 20px; }
+            h2 { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Background Animation Canvas -->
     <canvas id="particles"></canvas>
 
     <div class="container">
         <h2><i class="fa-solid fa-paper-plane"></i> Get In Touch</h2>
         
-        <form name="submit-to-google-sheet">
-            
+        <form id="contactForm">
             <div class="input-box">
                 <input name="Name" type="text" placeholder="Your Name" required autocomplete="off">
                 <i class="fa-solid fa-user"></i>
@@ -215,8 +217,8 @@
             </div>
 
             <div class="input-box">
-                <textarea name="Message" placeholder="Type your message here..." required></textarea>
-                <i class="fa-solid fa-comment-dots" style="top: 15px;"></i>
+                <textarea name="Message" placeholder="How can we help?" required></textarea>
+                <i class="fa-solid fa-comment-dots" style="top: 18px;"></i>
             </div>
 
             <button type="submit" id="submitBtn">
@@ -231,7 +233,7 @@
     <script>
         // --- 1. THE SUBMISSION LOGIC ---
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwD5u5jRIzmBYSUyKPpYVOZzRYfBnbY8yQ7TkXS-OludxplmN9AQtNcBxFYMK1cu3gC/exec';
-        const form = document.forms['submit-to-google-sheet'];
+        const form = document.getElementById('contactForm');
         const msg = document.getElementById("msg");
         const btn = document.getElementById("submitBtn");
         const btnText = document.getElementById("btnText");
@@ -240,25 +242,21 @@
         form.addEventListener('submit', e => {
             e.preventDefault();
             
-            // UI Loading State
-            btnText.innerHTML = "Sending...";
+            btnText.innerHTML = "Sending";
             spinner.style.display = "block";
-            btn.style.opacity = "0.7";
             btn.disabled = true;
+            btn.style.filter = "grayscale(0.5)";
 
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
                 .then(response => {
-                    // Success UI
-                    msg.innerHTML = "<i class='fa-solid fa-check-circle'></i> Message Sent Successfully!";
+                    msg.innerHTML = "<i class='fa-solid fa-check-circle'></i> Message Sent!";
                     msg.className = "show success";
                     form.reset();
                     resetButton();
-                    setTimeout(() => { msg.className = ""; }, 5000);
+                    setTimeout(() => { msg.className = ""; }, 4000);
                 })
                 .catch(error => {
-                    // Error UI
-                    console.error('Error!', error.message);
-                    msg.innerHTML = "<i class='fa-solid fa-exclamation-circle'></i> Failed to send. Please try again.";
+                    msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Error. Try again.";
                     msg.className = "show error";
                     resetButton();
                 });
@@ -267,96 +265,91 @@
         function resetButton() {
             btnText.innerHTML = "Send Message";
             spinner.style.display = "none";
-            btn.style.opacity = "1";
             btn.disabled = false;
+            btn.style.filter = "none";
         }
 
-
-        // --- 2. BACKGROUND PARTICLE ANIMATION ---
+        // --- 2. OPTIMIZED BACKGROUND ANIMATION ---
         const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const ctx = canvas.getContext('2d', { alpha: false }); // Performance optimization
+        
+        let width, height, particlesArray;
+        const particleCount = window.innerWidth < 768 ? 40 : 70; // Reduce count on mobile
+        const connectionDistance = 140;
 
-        let particlesArray;
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            init();
+        }
 
-        // Create Particle Class
         class Particle {
             constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1; // Size between 1 and 4
-                this.speedX = Math.random() * 1 - 0.5; // Random horizontal speed
-                this.speedY = Math.random() * 1 - 0.5; // Random vertical speed
-                this.color = `rgba(0, 210, 255, ${Math.random() * 0.5 + 0.1})`; // Neon Blue opacity
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.8;
+                this.speedY = (Math.random() - 0.5) * 0.8;
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
 
-                // Bounce off edges
-                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
-                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+                if (this.x > width) this.x = 0;
+                else if (this.x < 0) this.x = width;
+                if (this.y > height) this.y = 0;
+                else if (this.y < 0) this.y = height;
             }
             draw() {
-                ctx.fillStyle = this.color;
-                ctx.shadowBlur = 10; // Glow effect
-                ctx.shadowColor = "#00d2ff";
+                ctx.fillStyle = '#00d2ff';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        // Init Particles
         function init() {
             particlesArray = [];
-            for (let i = 0; i < 80; i++) { // Number of particles
+            for (let i = 0; i < particleCount; i++) {
                 particlesArray.push(new Particle());
             }
         }
 
-        // Connect particles with lines
-        function handleParticles() {
+        function animate() {
+            // Draw background to clear instead of clearRect for better performance with alpha:false
+            ctx.fillStyle = '#16162d'; 
+            ctx.fillRect(0, 0, width, height);
+            
+            ctx.lineWidth = 0.8;
+            
             for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-                
-                for (let j = i; j < particlesArray.length; j++) {
-                    const dx = particlesArray[i].x - particlesArray[j].x;
-                    const dy = particlesArray[i].y - particlesArray[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
+                const p1 = particlesArray[i];
+                p1.update();
+                p1.draw();
 
-                    if (distance < 150) { // Connection distance
+                // Optimization: Only check forward in array
+                for (let j = i + 1; j < particlesArray.length; j++) {
+                    const p2 = particlesArray[j];
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const distSq = dx * dx + dy * dy; // Use squared distance to avoid Math.sqrt
+
+                    if (distSq < connectionDistance * connectionDistance) {
+                        const opacity = 1 - (Math.sqrt(distSq) / connectionDistance);
+                        ctx.strokeStyle = `rgba(0, 210, 255, ${opacity * 0.2})`;
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 210, 255, ${0.1 - distance/2000})`;
-                        ctx.lineWidth = 1;
-                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
                         ctx.stroke();
-                        ctx.closePath();
                     }
                 }
             }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            handleParticles();
             requestAnimationFrame(animate);
         }
 
-        // Resize event
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        });
-
-        init();
+        window.addEventListener('resize', resize);
+        resize();
         animate();
-
     </script>
-
 </body>
 </html>
