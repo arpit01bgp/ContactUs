@@ -20,7 +20,7 @@
 
         body {
             background: #0f0c29;
-            /* 4K Background Image - Static */
+            /* 4K Background Image - Completely Static */
             background-image: linear-gradient(rgba(15, 12, 41, 0.6), rgba(15, 12, 41, 0.8)), 
                               url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=3844&auto=format&fit=crop');
             background-size: cover;
@@ -35,8 +35,6 @@
             position: relative;
         }
 
-        /* Removed moveGlow animation and body::before to stop all background movement */
-
         /* --- GLASS CONTAINER --- */
         .container {
             position: relative;
@@ -47,17 +45,11 @@
             padding: 40px;
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.15);
+            /* Standard blur without complex transforms to prevent foreground movement */
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            will-change: transform;
-        }
-
-        .container:hover {
-            transform: translateY(-5px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 30px 60px rgba(0, 210, 255, 0.15);
+            /* Removed transitions and will-change to lock the foreground in place */
         }
 
         h2 {
@@ -90,7 +82,7 @@
             border-radius: 12px;
             color: #fff;
             font-size: 16px;
-            transition: all 0.25s ease;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
         .input-box textarea {
@@ -140,7 +132,6 @@
         }
 
         button:hover {
-            transform: scale(1.02);
             filter: brightness(1.1);
             box-shadow: 0 12px 25px rgba(0, 210, 255, 0.3);
         }
